@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Button Count Example</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="server.js"></script>
+</head>
+
+<body>
+
+	<button id="modal-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		Alert
+	</button>
+	<a href="page1.html"><button>Page 1</button></a>
+	<a href="page2.html"><button>Page 2</button></a>
+	<a href="page3.html"><button>Page 3</button></a>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div id="modal" class="modal-body">
+					<!-- <p id="viewerCount"></p> -->
+					<button id="incrementButton">RHb2KInkGDAEqE</button>
+					<button id="incrementButton1">VIUKN5XVR31HWDH</button>
+					<button id="incrementButton2">FNPZEFMSP9KXBOK</button>
+					<h1>RHb2KInkGDAEqE Count: <span id="count">0</span></h1>
+					<h1>VIUKN5XVR31HWDH Count: <span id="count1">0</span></h1>
+					<h1>FNPZEFMSP9KXBOK Count: <span id="count2">0</span></h1>
+					<button id="closeButton">Close RHb2KInkGDAEqE</button>
+					<button id="closeButton1">Close VIUKN5XVR31HWDH</button>
+					<button id="closeButton2">Close FNPZEFMSP9KXBOK</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <h1>Button Count: <span id="count">0</span></h1>
+  <button id="incrementButton">Click Me!</button>
+  <button id="closeButton">Close</button> -->
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		const socket = io();
+		let count = 0;
+		let count1 = 0;
+		let count2 = 0;
+
+		//emit the initial count value to the server
+		socket.emit('countUpdate', count);
+		socket.emit('countUpdate1', count1);
+		socket.emit('countUpdate2', count2);
+
+		//when the increment button is clicked, send an 'incrementCount' message to the server
+		document.querySelector('#incrementButton').addEventListener('click', () => {
+			socket.emit('incrementCount');
+		});
+
+		//when the close button is clicked, send a 'decrementCount' message to the server
+		document.querySelector('#closeButton').addEventListener('click', () => {
+			socket.emit('decrementCount');
+		});
+
+		//listen for 'countUpdate' message from the server, and update the count variable
+		socket.on('countUpdate', (count) => {
+			document.querySelector('#count').textContent = count;
+		});
+
+		//when the increment button is clicked, send an 'incrementCount1' message to the server
+		document.querySelector('#incrementButton1').addEventListener('click', () => {
+			socket.emit('incrementCount1');
+		});
+
+		//when the close button is clicked, send a 'decrementCount1' message to the server
+		document.querySelector('#closeButton1').addEventListener('click', () => {
+			socket.emit('decrementCount1');
+		});
+
+		//listen for 'countUpdate1' message from the server, and update the count variable
+		socket.on('countUpdate1', (count1) => {
+			document.querySelector('#count1').textContent = count1;
+		});
+
+		//when the increment button is clicked, send an 'incrementCount2' message to the server
+		document.querySelector('#incrementButton2').addEventListener('click', () => {
+			socket.emit('incrementCount2');
+		});
+
+		//when the close button is clicked, send a 'decrementCount2' message to the server
+		document.querySelector('#closeButton2').addEventListener('click', () => {
+			socket.emit('decrementCount2');
+		});
+
+		//listen for 'countUpdate2' message from the server, and update the count variable
+		socket.on('countUpdate2', (count2) => {
+			document.querySelector('#count2').textContent = count2;
+		});
+	</script>
+</body>
+
+</html>
